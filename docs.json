@@ -1,6 +1,6 @@
 {
   "name": "開発品質ガイドライン",
-  "theme": "#FF5168",
+  "theme": "#00CCBC",
   "favicon": "/assets/favicon.ico",
   "logo": "https://mycdn.com/awesome-logo.png",
   "logoDark": "/assets/logo-dark.png",
@@ -33,13 +33,7 @@
   ],
   "sidebar": [
     ["まずはじめに", "/"],
-    [
-      "報連相",
-      [
-        ["Reference API", "/reference"],
-        ["FAQs", "/faqs"]
-      ]
-    ],
+    ["報連相", [["報連相の前提", "/0.報連相/報連相の前提"]]],
     [
       "チケット作成",
       [
