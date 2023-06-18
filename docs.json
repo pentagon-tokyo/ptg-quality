@@ -9,6 +9,28 @@
     "apiKey": "...",
     "indexName": "..."
   },
+  "anchors": [
+    {
+      "title": "ホームページ",
+      "icon": "house",
+      "link": "https://pentagon.tokyo/"
+    },
+    {
+      "title": "技術ブログ",
+      "icon": "terminal",
+      "link": "https://blog.pentagon.tokyo/"
+    },
+    {
+      "title": "求人・採用情報",
+      "icon": "briefcase",
+      "link": "https://job.pentagon.tokyo/"
+    },
+    {
+      "title": "YouTube",
+      "icon": "play",
+      "link": "https://www.youtube.com/@pentagon-tokyo/videos"
+    }
+  ],
   "sidebar": [
     ["まずはじめに", "/"],
     [
