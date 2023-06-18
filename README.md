@@ -4,14 +4,18 @@
 <img src="https://pentagon.tokyo/wp-content/themes/luxech/assets/img/materials/top/ptg_firstview.png" width="400px" />
 </p>
 
-[株式会社 Pentagon](https://pentagon.tokyo/)のアプリ開発品質向上のため品質ガイドラインを定める。
-当社が目指すべき開発の在り方を明文化したガイドラインです。このガイドラインに沿って開発をすることで、開発品質が向上することを目指す。
+ここに[株式会社 Pentagon](https://pentagon.tokyo/) のアプリ開発品質向上のため品質ガイドラインを定めます。
+当社が目指すべき開発の在り方を明文化したガイドラインです。このガイドラインに沿って開発をすることで、開発品質が向上させます。
 
 [![Open in Visual Studio Code](https://img.shields.io/static/v1?logo=visualstudiocode&label=&message=Open%20in%20Visual%20Studio%20Code&labelColor=2c2c32&color=007acc&logoColor=007acc)](https://open.vscode.dev/pentagon-tokyo/ptg-quality)
 
 ## はじめに
 
-私たちは、開発のプロセスを以下の通りに分解した。このリポジトリでは、各開発サイクルごとに、品質向上のために必要な行動指針を記載していく。
+まずは、私たちは、開発のプロセスを以下の通りに分解しました。ここでは、各開発サイクルごとに、品質向上のために必要な行動指針を記載していきます。
+
+[https://docs.page/pentagon-tokyo/ptg-quality](https://docs.page/pentagon-tokyo/ptg-quality)
+
+※このリポジトリは Public リポジトリです。
 
 ## 開発のサイクル
 

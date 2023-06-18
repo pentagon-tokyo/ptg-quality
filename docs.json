@@ -1,6 +1,6 @@
 {
   "name": "開発品質ガイドライン",
-  "theme": "#ab47bc",
+  "theme": "#FF5168",
   "favicon": "/assets/favicon.ico",
   "logo": "https://mycdn.com/awesome-logo.png",
   "logoDark": "/assets/logo-dark.png",
@@ -21,29 +21,53 @@
     [
       "チケット作成",
       [
-        ["Reference API", "/reference"],
-        ["FAQs", "/faqs"]
+        ["仕様／指摘内容の理解", "/reference"],
+        ["チケット仕様確認", "/reference"],
+        ["マイルストーン設定", "/reference"],
+        ["アサイン", "/reference"],
+        ["スケジュール設定", "/reference"]
       ]
     ],
     [
       "チケット仕様確認",
       [
-        ["Reference API", "/reference"],
-        ["FAQs", "/faqs"]
+        ["予定工数入力", "/reference"],
+        ["ガントチャート確認", "/reference"],
+        ["設計／修正箇所の検討", "/reference"]
       ]
     ],
     [
       "実装",
       [
-        ["Reference API", "/reference"],
-        ["FAQs", "/faqs"]
+        ["ビルド", "/reference"],
+        ["ブランチ作成", "/reference"],
+        ["コーディング", "/reference"],
+        ["動作確認", "/reference"],
+        ["プルリクエスト作成", "/reference"],
+        ["レビュー依頼", "/reference"]
       ]
     ],
     [
       "レビュー",
       [
-        ["Reference API", "/reference"],
-        ["FAQs", "/faqs"]
+        ["期待値理解", "/reference"],
+        ["変更内容確認", "/reference"],
+        ["ソースコード確認", "/reference"],
+        ["関連箇所のチェック", "/reference"],
+        ["動作確認", "/reference"],
+        ["修正箇所の指摘", "/reference"],
+        ["マージ", "/reference"],
+        ["実績工数入力", "/reference"]
+      ]
+    ],
+    [
+      "テスト",
+      [
+        ["端末確認", "/reference"],
+        ["テストシート作成", "/reference"],
+        ["バグ共有", "/reference"],
+        ["チケット作成", "/reference"],
+        ["チケットクローズ", "/reference"]
       ]
     ]
   ]
