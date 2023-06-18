@@ -1,0 +1,50 @@
+{
+  "name": "開発品質ガイドライン",
+  "theme": "#ab47bc",
+  "favicon": "/assets/favicon.ico",
+  "logo": "https://mycdn.com/awesome-logo.png",
+  "logoDark": "/assets/logo-dark.png",
+  "docsearch": {
+    "appId": "...",
+    "apiKey": "...",
+    "indexName": "..."
+  },
+  "sidebar": [
+    ["まずはじめに", "/"],
+    [
+      "報連相",
+      [
+        ["Reference API", "/reference"],
+        ["FAQs", "/faqs"]
+      ]
+    ],
+    [
+      "チケット作成",
+      [
+        ["Reference API", "/reference"],
+        ["FAQs", "/faqs"]
+      ]
+    ],
+    [
+      "チケット仕様確認",
+      [
+        ["Reference API", "/reference"],
+        ["FAQs", "/faqs"]
+      ]
+    ],
+    [
+      "実装",
+      [
+        ["Reference API", "/reference"],
+        ["FAQs", "/faqs"]
+      ]
+    ],
+    [
+      "レビュー",
+      [
+        ["Reference API", "/reference"],
+        ["FAQs", "/faqs"]
+      ]
+    ]
+  ]
+}
