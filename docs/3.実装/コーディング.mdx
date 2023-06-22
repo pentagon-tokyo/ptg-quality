@@ -129,9 +129,14 @@ Future<void> getUsers() async {
 ```dart
 Future<void> getUsers() async {
   List<User> users = await apiService.fetchUsers();
-  print('ユーザー情報を取得しました:');
-  for (var user in users) {
-    print('ID: ${user.id}, 名前: ${user.name}, 年齢: ${user.age}');
+
+  if (users.isEmpty) {
+    print('ユーザー情報はありません。');
+  } else {
+    print('ユーザー情報を取得しました:');
+    for (var user in users) {
+      print('ID: ${user.id}, 名前: ${user.name}, 年齢: ${user.age}');
+    }
   }
 }
 ```
