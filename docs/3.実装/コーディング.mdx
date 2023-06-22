@@ -22,6 +22,52 @@
 
 正常系とは、期待するデータを受け取り、期待する結果が返ってくることを想定した場合のことです。一方、通常ユーザーが入力しないであろうデータを送ったり、サーバー側でエラーが発生し、期待する結果が返ってこない場合を想定することを異常系と呼びます。
 
+#### 良いコード
+
+```dart
+class UserRepository {
+  final ApiService apiService;
+
+  UserRepository(this.apiService);
+
+  Future<void> getUsers() async {
+    try {
+      List<User> users = await apiService.fetchUsers();
+
+      if (users.isEmpty) {
+        print('ユーザー情報はありません。');
+      } else {
+        print('ユーザー情報を取得しました:');
+        for (var user in users) {
+          print('ID: ${user.id}, 名前: ${user.name}, 年齢: ${user.age}');
+        }
+      }
+    } catch (e) {
+      print('エラーが発生しました: ${e.toString()}');
+    }
+  }
+}
+
+```
+
+#### 悪いコード
+
+```dart
+class UserRepository {
+  final ApiService apiService;
+
+  UserRepository(this.apiService);
+
+  Future<void> getUsers() async {
+    List<User> users = await apiService.fetchUsers();
+    print('ユーザー情報を取得しました:');
+    for (var user in users) {
+      print('ID: ${user.id}, 名前: ${user.name}, 年齢: ${user.age}');
+    }
+  }
+}
+```
+
 <Info>
   ジュニアエンジニアの場合、異常系を考慮せず実装してしまうため、バグが混入することがあります。ユーザーやサーバーが正常でない場合を考えて、実装をする必要があります。
 </Info>
@@ -93,7 +139,7 @@ int newUserId = oldUserId + 1;
 また、具体的な内容を示さずに「このコードを修正する」といったコメントも有用ではありません。
 
 ```dart
-// この部分はもっと良くなるべき。
+// FIXME: この部分はもっと良くなるべき。
 void someFunction() {
   // ...
 }
@@ -104,6 +150,41 @@ void someFunction() {
 ```dart
 // この関数はユーザーの電話番号を取得します。（実際にはメールアドレスを取得している）
 String fetchUserContact(int userId) {
+  // ...
+}
+```
+
+### TODO コメントと FIXME コメント
+
+実装をしている最中にバグや残タスクに気がついたら、TODO や FIXME コメントを記述します。
+この際、具体的にコメントを書くことに注意しましょう。
+
+プロジェクトのリーダーは、プルリクエスト時に TODO や FIXME を見つけたら、必ずチケットを作成します。
+
+**良い例**
+
+```dart
+// TODO: 画面遷移をする時にuserIdが渡せてないので渡すように対応必要
+void hoge() {
+  // ...
+}
+
+// TODO: 仕様確認中のため別チケットで対応。=> チケット番号32参照
+void foo() {
+  // ...
+}
+```
+
+**悪い例**
+
+```dart
+// FIXME:
+void hoge() {
+  // ...
+}
+
+// FIXME: この部分はもっと良くなるべき。
+void foo() {
   // ...
 }
 ```
