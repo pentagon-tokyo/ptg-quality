@@ -106,7 +106,7 @@ class EmailService {
 #### 良いコード
 
 ```dart
-Future<void> getUsers() async {
+Future<void> printUsers() async {
   try {
     List<User> users = await apiService.fetchUsers();
 
@@ -127,7 +127,7 @@ Future<void> getUsers() async {
 #### 悪いコード
 
 ```dart
-Future<void> getUsers() async {
+Future<void> printUsers() async {
   List<User> users = await apiService.fetchUsers();
 
   if (users.isEmpty) {
