@@ -6,7 +6,7 @@
 
 ### 責務を意識する
 
-**重要なのは「関心の分離」です。**
+#### 関心の分離
 
 > 関心の分離とは、ソフトウェア工学においては、プログラムを関心（責任・何をしたいのか）毎に分離された構成要素で構築することである。
 
@@ -14,7 +14,88 @@
 
 優秀なエンジニアは、そのクラスが何をすべきで何をすべきではないのかを意識してコードを書いています。責務を意識しないで書いたコードは、分かりづらくメンテナンスしにくコードとなるでしょう。プルリクエスト時に指摘を受け、大きな出戻りが発生します。
 
-<Success>クラスやファイルの責務を考えてコードを書こう！</Success>
+#### 単一責任の原則
+
+> 単一責任の原則 は、プログラミングに関する原則であり、モジュール、クラスまたは関数は、単一の機能について責任を持ち、その機能をカプセル化するべきであるという原則である。
+
+引用：[wikipedia](https://ja.wikipedia.org/wiki/%E5%8D%98%E4%B8%80%E8%B2%AC%E4%BB%BB%E3%81%AE%E5%8E%9F%E5%89%87)
+
+クラスと同様に関数についても責務も意識する必要があります。関数が処理すべき内容を１つに絞ったり、主目的でない処理をカプセル化し隠蔽することで、見通しのよいコードになります。
+
+では、具体的に「関心の分離」と「単一責任の原則」を守った良い例と守ってない悪い例を紹介します。
+
+**悪い例**
+
+```dart
+class User {
+  String name;
+  String email;
+  DateTime dateOfBirth;
+
+  User(this.name, this.email);
+
+  void changeName(String newName) {
+    this.name = newName;
+  }
+
+  String getUserDetails() {
+    final year = dateOfBirth.year.toString();
+    final month = dateOfBirth.month.toString();
+    final day = dateOfBirth.day.toString();
+    final birthDay = '$year年$month月$day日';
+    return 'Name: $name, Email: $email, BirthDay: $birthDay';
+  }
+
+  void sendEmail(String message) {
+    print('Sending email to $email...');
+    // 省略: メールを送信する実際のロジック
+    print('Email sent!');
+  }
+}
+
+```
+
+**良い例**
+
+```dart
+class User {
+  String name;
+  String email;
+  DateTime dateOfBirth;
+
+  User(this.name, this.email);
+
+  void changeName(String newName) {
+    this.name = newName;
+  }
+
+  String getUserDetails() {
+    final birthDay = dateOfBirth.toDateString();
+    return 'Name: $name, Email: $email, BirthDay: $birthDay';
+  }
+}
+
+class EmailService {
+  void sendEmail(String email, String message) {
+    print('Sending email to $email...');
+    // 省略: メールを送信する実際のロジック
+    print('Email sent!');
+  }
+}
+
+```
+
+ポイント１：カプセル化
+
+良いコードでは、`toDateString()`を使い、主目的ではないコードをカプセル化しています。これによりソースコードの可読性が良くなっています。
+
+ポイント２：責任の分離
+
+良いコードでは、User クラスはユーザーの情報を管理する責任だけを持ち、EmailService クラスはメールの送信という責任を持つようになっています。
+
+このように、単一責任の原則を守ることで、各クラスはその責任に集中でき、コードの可読性や保守性が向上します。また、問題の特定や修正が容易になるというメリットもあります。
+
+<Success>クラスや関数の責務を考えてコードを書こう！</Success>
 
 ### 通信部分を実装する時
 
@@ -25,45 +106,32 @@
 #### 良いコード
 
 ```dart
-class UserRepository {
-  final ApiService apiService;
+Future<void> getUsers() async {
+  try {
+    List<User> users = await apiService.fetchUsers();
 
-  UserRepository(this.apiService);
-
-  Future<void> getUsers() async {
-    try {
-      List<User> users = await apiService.fetchUsers();
-
-      if (users.isEmpty) {
-        print('ユーザー情報はありません。');
-      } else {
-        print('ユーザー情報を取得しました:');
-        for (var user in users) {
-          print('ID: ${user.id}, 名前: ${user.name}, 年齢: ${user.age}');
-        }
+    if (users.isEmpty) {
+      print('ユーザー情報はありません。');
+    } else {
+      print('ユーザー情報を取得しました:');
+      for (var user in users) {
+        print('ID: ${user.id}, 名前: ${user.name}, 年齢: ${user.age}');
       }
-    } catch (e) {
-      print('エラーが発生しました: ${e.toString()}');
     }
+  } catch (e) {
+    print('エラーが発生しました: ${e.toString()}');
   }
 }
-
 ```
 
 #### 悪いコード
 
 ```dart
-class UserRepository {
-  final ApiService apiService;
-
-  UserRepository(this.apiService);
-
-  Future<void> getUsers() async {
-    List<User> users = await apiService.fetchUsers();
-    print('ユーザー情報を取得しました:');
-    for (var user in users) {
-      print('ID: ${user.id}, 名前: ${user.name}, 年齢: ${user.age}');
-    }
+Future<void> getUsers() async {
+  List<User> users = await apiService.fetchUsers();
+  print('ユーザー情報を取得しました:');
+  for (var user in users) {
+    print('ID: ${user.id}, 名前: ${user.name}, 年齢: ${user.age}');
   }
 }
 ```
