@@ -185,3 +185,17 @@
 * 再計画中: テスト担当者が受け入れテストで問題が発生し、対応の再計画が必要な状態です。
 
 以上
+
+## mermaid表示検証
+
+```mermaid
+sequenceDiagram
+
+participant A as 起票者
+participant B as 開発窓口
+participant C as 開発担当者
+
+A->>A: チケット作成
+A->>B: 担当変更
+B->>C: a
+```
