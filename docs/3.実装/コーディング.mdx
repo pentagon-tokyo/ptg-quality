@@ -305,7 +305,7 @@ given, when, thenのフレームワークはテストをより構造化し、可
 
 ## テストを書く際のコツ
 given, when, thenのフレームワーク通りにテストコードを書くことです。
- 
+
 今回は簡単に説明するためRailsを使用してUserモデルをテストします。
 
 ### DBスキーマの定義
@@ -351,7 +351,7 @@ user01:
 
 ### Userモデルをテストする
 test/models/user_test.rbにテストを書きます。
- 
+
 今回のテストケースは以下のようにテストを行います。
 - name,emailともにバリデーションが通るかどうか。
 - nameが空の場合はバリデーションが通るかどうか。
@@ -400,4 +400,24 @@ class UserTest < ActiveSupport::TestCase
     assert_not @user01.valid? # 結果を比較 バリデーションが通らないのでfalseが返ってくる
   end
 end
+```
+
+### テストの実行
+```bash
+docker-compose exec web rails test test/models/user_test.rb
+```
+
+### テスト結果
+今回４つのテストを実行したので`4 runs`と表示されています。
+....と表示されて入ればテストが成功しています。
+
+テストが失敗した場合は、`E`と表示され`failures`に1が表示されます。
+
+```bash
+# Running:
+
+....
+
+Finished in 0.141868s, 28.1953 runs/s, 28.1953 assertions/s.
+4 runs, 4 assertions, 0 failures, 0 errors, 0 skips
 ```
