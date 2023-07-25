@@ -308,7 +308,9 @@ given, when, thenのフレームワーク通りにテストコードを書くこ
 今回は簡単に説明するためRailsを使用してUserモデルをテストします。
 
 ### DBスキーマの定義
-```db/schema.rb
+db/schema.rbにテーブルの定義をします。
+
+``` ruby
 ActiveRecord::Schema[7.0].define(version: 2023_07_24_234620) do
   create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -320,7 +322,9 @@ end
 ```
 
 ### Userモデルの定義
-``` app/models/user.rb
+app/models/user.rbにUserモデルを定義します。
+
+``` ruby
 class User < ApplicationRecord
   VALID_EMAIL = /\A[\w+\-.]+@[a-z\d\-]+\.[a-z]+\z/i
 
@@ -333,10 +337,10 @@ class User < ApplicationRecord
 end
 ```
 
-### Userテストデータ
-- test/fixtures/users.ymlにテストデータを定義します。
+### Userテストデータの定義
+test/fixtures/users.ymlにテストデータを定義します。
 
-``` test/fixtures/users.yml
+``` ruby
 user01:
   nickname: "test01"
   email: "test@example.com"
@@ -345,14 +349,14 @@ user01:
 ```
 
 ### Userモデルのテストを書く
-- test/models/user_test.rbにテストを書きます。
-### 今回テストするテストケースは以下のようになります。
+test/models/user_test.rbにテストを書きます。
+今回のテストケースは以下のようにテストを行います。
 - name,emailともにバリデーションが通るかどうか
 - nameが空の場合はバリデーションが通るかどうか
 - emailが空の場合はバリデーションが通るかどうか
 - emailが正規表現にマッチしない場合はバリデーションが通るかどうか
 
-```test/models/user_test.rb
+```ruby
 require "test_helper"
 
 class UserTest < ActiveSupport::TestCase
