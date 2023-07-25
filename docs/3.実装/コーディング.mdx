@@ -286,7 +286,7 @@ void foo() {
 
 <Info>ビジネスロジックは複雑になるので、テストを書こう！</Info>
 
-## given, when, thenのフレームワーク
+## given, when, thenのフレームワークとは
 given, when, thenのフレームワークはテストをより構造化し、可読性を高め、テストケースの意図を明確にするために非常に役立つ記法です。
 各セクションに分けてテストを記述することで、テストが何をしているのか、どのような条件で実行されるのか、期待される結果は何か、が明確になります。
 これにより、テストケースの理解やメンテナンスが容易になります。
@@ -302,3 +302,96 @@ given, when, thenのフレームワークはテストをより構造化し、可
 ### then(操作した結果)
 - メソッドの呼び出しの結果が、期待される結果と一致するかを検証します。
 - テストが成功したかどうかを確認します。
+
+## テストを書く際のコツ
+given, when, thenのフレームワーク通りにテストコードを書くことです。
+今回は簡単に説明するためRailsを使用してUserモデルをテストします。
+
+### DBスキーマの定義
+```db/schema.rb
+ActiveRecord::Schema[7.0].define(version: 2023_07_24_234620) do
+  create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "email", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+end
+```
+
+### Userモデルの定義
+``` app/models/user.rb
+class User < ApplicationRecord
+  VALID_EMAIL = /\A[\w+\-.]+@[a-z\d\-]+\.[a-z]+\z/i
+
+  # 名前が空の場合はバリデーション
+  validates :name, presence: true
+
+  # メールアドレスが空の場合はバリデーション
+  # メールアドレスが正規表現にマッチしない場合はバリデーション
+  validates :email, presence: true, format: { with: VALID_EMAIL }
+end
+```
+
+### Userテストデータ
+- test/fixtures/users.ymlにテストデータを定義します。
+
+``` test/fixtures/users.yml
+user01:
+  nickname: "test01"
+  email: "test@example.com"
+  created_at: <%= DateTime.now %>
+  updated_at: <%= DateTime.now %>
+```
+
+### Userモデルのテストを書く
+- test/models/user_test.rbにテストを書きます。
+### 今回テストするテストケースは以下のようになります。
+- name,emailともにバリデーションが通るかどうか
+- nameが空の場合はバリデーションが通るかどうか
+- emailが空の場合はバリデーションが通るかどうか
+- emailが正規表現にマッチしない場合はバリデーションが通るかどうか
+
+```test/models/user_test.rb
+require "test_helper"
+
+class UserTest < ActiveSupport::TestCase
+  setup do
+    # given
+    @user01 = users(:user01) # fixturesからUserデータを参照
+  end
+
+  # name,emailともにバリデーションが通るかどうか
+  test 'should be valid' do
+    # when
+    # 何も変化なし
+
+    # then
+    assert @user01.valid? # 結果を比較 バリデーションが通るのでtrueが返ってくる
+  end
+
+  # nameが空の場合はバリデーションが通るかどうか
+  test 'should be invalid without name' do
+    # when
+    @user01.name = '' # user01のnameを空に変更
+
+    # then
+    assert_not @user01.valid? # 結果を比較 バリデーションが通らないのでfalseが返ってくる
+  end
+
+  # emailが空の場合はバリデーションが通るかどうか
+  test 'should be invalid without email' do
+    # when
+    @user01.email = '' # user01のemailを空に変更
+    # then
+    assert_not @user01.valid? # 結果を比較 バリデーションが通らないのでfalseが返ってくる
+
+  # emailが正規表現にマッチしない場合はバリデーションが通るかどうか
+  test 'should be invalid with invalid email' do
+    # when
+    @user01.email = 'test' # user01のemailをtestに変更
+    # then
+    assert_not @user01.valid? # 結果を比較 バリデーションが通らないのでfalseが返ってくる
+  end
+end
+```
