@@ -306,57 +306,18 @@ given, when, thenのフレームワークはテストをより構造化し、可
 ## テストを書く際のコツ
 given, when, thenのフレームワーク通りにテストコードを書くことです。
 
-今回は簡単に説明するためRailsを使用してUserモデルをテストします。
-
-### DBスキーマの定義
-db/schema.rbにテーブルの定義をします。
-
-``` ruby
-ActiveRecord::Schema[7.0].define(version: 2023_07_24_234620) do
-  create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.string "name", null: false
-    t.string "email", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-end
-```
-
-### Userモデルの定義
-app/models/user.rbにUserモデルを定義します。
-
-``` ruby
-class User < ApplicationRecord
-  VALID_EMAIL = /\A[\w+\-.]+@[a-z\d\-]+\.[a-z]+\z/i
-
-  # 名前が空の場合はバリデーション
-  validates :name, presence: true
-
-  # メールアドレスが空の場合はバリデーション
-  # メールアドレスが正規表現にマッチしない場合はバリデーション
-  validates :email, presence: true, format: { with: VALID_EMAIL }
-end
-```
-
-### Userテストデータの定義
-test/fixtures/users.ymlにテストデータを定義します。
-
-``` ruby
-user01:
-  nickname: "test01"
-  email: "test@example.com"
-  created_at: <%= DateTime.now %>
-  updated_at: <%= DateTime.now %>
-```
+今回はRailsを使用してUserモデルをテストします。
 
 ### Userモデルをテストする
-test/models/user_test.rbにテストを書きます。
-
 今回のテストケースは以下のようにテストを行います。
-- name,emailともにバリデーションが通るかどうか。
-- nameが空の場合はバリデーションが通るかどうか。
-- emailが空の場合はバリデーションが通るかどうか。
-- emailが正規表現にマッチしない場合はバリデーションが通るかどうか。
+
+1. name,emailともにバリデーションが通るかどうか。
+
+2. nameが空の場合はバリデーションが通るかどうか。
+
+3. emailが空の場合はバリデーションが通るかどうか。
+
+4. emailが正規表現にマッチしない場合はバリデーションが通るかどうか。
 
 ```ruby
 require "test_helper"
@@ -373,7 +334,7 @@ class UserTest < ActiveSupport::TestCase
     # 何も変化なし
 
     # then
-    assert @user01.valid? # 結果を比較 バリデーションが通るのでtrueが返ってくる
+    assert @user01.valid? # 結果を比較 バリデーションが通ればtrueが返ってくる
   end
 
   # nameが空の場合はバリデーションが通るかどうか
@@ -382,7 +343,7 @@ class UserTest < ActiveSupport::TestCase
     @user01.name = '' # user01のnameを空に変更
 
     # then
-    assert_not @user01.valid? # 結果を比較 バリデーションが通らないのでfalseが返ってくる
+    assert_not @user01.valid? # 結果を比較 バリデーションが通らななければfalseが返ってくる
   end
 
   # emailが空の場合はバリデーションが通るかどうか
@@ -390,29 +351,27 @@ class UserTest < ActiveSupport::TestCase
     # when
     @user01.email = '' # user01のemailを空に変更
     # then
-    assert_not @user01.valid? # 結果を比較 バリデーションが通らないのでfalseが返ってくる
+    assert_not @user01.valid? # 結果を比較 バリデーションが通らななければfalseが返ってくる
 
   # emailが正規表現にマッチしない場合はバリデーションが通るかどうか
   test 'should be invalid with invalid email' do
     # when
     @user01.email = 'test' # user01のemailをtestに変更
     # then
-    assert_not @user01.valid? # 結果を比較 バリデーションが通らないのでfalseが返ってくる
+    assert_not @user01.valid? # 結果を比較 バリデーションが通らななければfalseが返ってくる
   end
 end
 ```
+
+ - `assert`は、期待される結果(true)と実際の結果が一致しているかどうかを確認します。
+ - `assert_not`は、期待される結果(false)と実際の結果が一致しているかどうかを確認します。
 
 ### テストの実行
 ``` bash
 docker-compose exec web rails test test/models/user_test.rb
 ```
 
-### テスト結果
-今回４つのテストを実行したので`4 runs`と表示されています。
-
-....と表示されて入ればテストが成功しています。
-
-テストが失敗した場合は`E`と表示され、失敗したテストの数が`failures`表示されます。
+### テストの結果
 
 ``` bash
 # Running:
@@ -422,3 +381,43 @@ docker-compose exec web rails test test/models/user_test.rb
 Finished in 0.141868s, 28.1953 runs/s, 28.1953 assertions/s.
 4 runs, 4 assertions, 0 failures, 0 errors, 0 skips
 ```
+
+#### テストの結果は「....」と表示されています。
+
+- 各ドット（.）は1つのテストを表しており、この場合は4つのテストが正常に実行されたことを示しています。
+
+#### 4 runs
+
+- 全体のテスト数を示しています。
+#### 4 assertions
+
+- テストが成功した数を示しています。
+#### 0 failures
+
+- テストが失敗した数を示しています。
+#### 0 errors
+
+- テスト中に発生したエラーの数を示しています。
+
+#### 0 skips
+
+- テストがスキップされた数を示しています。
+
+
+#### テストした結果の内容は以下の通りになります。
+
+1. name,emailともにバリデーションが通るかどうか。
+
+ Userモデルのバリデーションが通り、`assert`と比較して`@user01.valid?`の結果がtrueであるためテストは成功しました。
+
+2. nameが空の場合はバリデーションが通るかどうか。
+
+ Userモデルのバリデーションが通らないため、`assert_not`と比較して`@user01.valid?`の結果がfalseであるためテストは成功しました。
+
+3. emailが空の場合はバリデーションが通るかどうか。
+
+ Userモデルのバリデーションが通らないため、`assert_not`と比較して`@user01.valid?`の結果がfalseであるためテストは成功しました。
+
+4. emailが正規表現にマッチしない場合はバリデーションが通るかどうか。
+
+ Userモデルのバリデーションが通らないため、`assert_not`と比較して`@user01.valid?`の結果がfalseであるためテストは成功しました。
