@@ -285,3 +285,80 @@ void foo() {
 テストが書いてあることで、運用保守フェーズでも自信を持って変更することができ、検証にかかるコストを抑えることができます。
 
 <Info>ビジネスロジックは複雑になるので、テストを書こう！</Info>
+
+## given, when, thenのフレームワークとは
+given, when, thenのフレームワークはテストをより構造化し、可読性を高め、テストケースの意図を明確にするために非常に役立つ記法です。
+各セクションに分けてテストを記述することで、テストが何をしているのか、どのような条件で実行されるのか、期待される結果は何か、が明確になります。
+これにより、テストケースの理解やメンテナンスが容易になります。
+
+### given(前提条件)
+- テストを実行するための前提条件を定義します。
+- データを作成します。
+
+### when(操作)
+- テストケースの条件に応じて、givenで定義したデータを変化させます。
+- 変化させたデータを用いて、テスト対象のメソッドを呼び出し、テストを実行します。
+
+### then(操作した結果)
+- メソッドの呼び出しの結果が、期待される結果と一致するかを検証します。
+- テストが成功したかどうかを確認します。
+
+## テストを書く際のコツ
+given, when, thenのフレームワーク通りにテストコードを書くことです。
+
+今回はRailsを使用してUserモデルをテストします。
+
+### Userモデルをテストする
+今回のテストケースは以下のようにテストを行います。
+
+1. name,emailともにバリデーションが通るかどうか。
+
+2. nameが空の場合はバリデーションが通るかどうか。
+
+3. emailが空の場合はバリデーションが通るかどうか。
+
+4. emailが正規表現にマッチしない場合はバリデーションが通るかどうか。
+
+```ruby
+require "test_helper"
+
+class UserTest < ActiveSupport::TestCase
+  setup do
+    # given
+    @user01 = users(:user01) # fixturesからUserデータを参照
+  end
+
+  # name,emailともにバリデーションが通るかどうか
+  test 'should be valid' do
+    # when
+    # 何も変化なし
+
+    # then
+    assert @user01.valid? # 結果を比較 バリデーションが通ればtrueが返ってくる
+  end
+
+  # nameが空の場合はバリデーションが通るかどうか
+  test 'should be invalid without name' do
+    # when
+    @user01.name = '' # user01のnameを空に変更
+
+    # then
+    assert_not @user01.valid? # 結果を比較 バリデーションが通らななければfalseが返ってくる
+  end
+
+  # emailが空の場合はバリデーションが通るかどうか
+  test 'should be invalid without email' do
+    # when
+    @user01.email = '' # user01のemailを空に変更
+    # then
+    assert_not @user01.valid? # 結果を比較 バリデーションが通らななければfalseが返ってくる
+
+  # emailが正規表現にマッチしない場合はバリデーションが通るかどうか
+  test 'should be invalid with invalid email' do
+    # when
+    @user01.email = 'test' # user01のemailをtestに変更
+    # then
+    assert_not @user01.valid? # 結果を比較 バリデーションが通らななければfalseが返ってくる
+  end
+end
+```
